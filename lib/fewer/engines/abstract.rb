@@ -9,13 +9,6 @@ module Fewer
         check_paths!
       end
 
-      def check_paths!
-        if (missing = paths.reject { |path| File.exist?(path) }).any?
-          files = missing.map { |path| path.to_s }.join("\n")
-          raise Fewer::MissingSourceFileError.new("Missing source file#{'s' if missing.size > 1}:\n#{files}")
-        end
-      end
-
       def content_type
         'text/plain'
       end
@@ -31,8 +24,7 @@ module Fewer
 
       def paths
         names.map { |name|
-          # TODO: Fix rather large security hole...
-          File.join(root, "#{name}#{extension}")
+          File.join(root, "#{File.basename(name.to_s)}#{extension}")
         }
       end
 
@@ -41,6 +33,14 @@ module Fewer
           File.read(path)
         }.join("\n")
       end
+
+      private
+        def check_paths!
+          if (missing = paths.reject { |path| File.exist?(path) }).any?
+            files = missing.map { |path| path.to_s }.join("\n")
+            raise Fewer::MissingSourceFileError.new("Missing source file#{'s' if missing.size > 1}:\n#{files}")
+          end
+        end
     end
   end
 end
