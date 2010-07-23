@@ -29,7 +29,8 @@ module Fewer
 
     private
       def names_from_path(path)
-        File.basename(path.sub(/^#{mount}\/?/, ''), '.*').split(',')
+        encoded = File.basename(path.sub(/^#{mount}\/?/, ''), '.*')
+        Serializer.decode(encoded)
       end
   end
 end
