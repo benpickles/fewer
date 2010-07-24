@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Pickles"]
-  s.date = %q{2010-07-23}
+  s.date = %q{2010-07-24}
   s.description = %q{Rack middleware to bundle assets and help you make fewer HTTP requests.}
   s.email = %q{spideryoung@gmail.com}
   s.extra_rdoc_files = [
@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
      "README.md",
      "Rakefile",
      "VERSION",
+     "fewer.gemspec",
      "lib/fewer.rb",
      "lib/fewer/app.rb",
      "lib/fewer/engines.rb",
@@ -31,6 +32,7 @@ Gem::Specification.new do |s|
      "lib/fewer/errors.rb",
      "lib/fewer/serializer.rb",
      "test/app_test.rb",
+     "test/engine_test.rb",
      "test/test_helper.rb"
   ]
   s.homepage = %q{http://github.com/benpickles/fewer}
@@ -39,9 +41,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Rack middleware to bundle assets and help you make fewer HTTP requests.}
   s.test_files = [
-    "test/abstract_bundler_test.rb",
-     "test/app_test.rb",
-     "test/less_bundler_test.rb",
+    "test/app_test.rb",
+     "test/engine_test.rb",
      "test/test_helper.rb"
   ]
 
