@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Pickles"]
-  s.date = %q{2010-07-24}
+  s.date = %q{2010-07-25}
   s.description = %q{Rack middleware to bundle assets and help you make fewer HTTP requests.}
   s.email = %q{spideryoung@gmail.com}
   s.extra_rdoc_files = [
@@ -28,6 +28,8 @@ Gem::Specification.new do |s|
      "lib/fewer/engines.rb",
      "lib/fewer/engines/abstract.rb",
      "lib/fewer/engines/css.rb",
+     "lib/fewer/engines/js.rb",
+     "lib/fewer/engines/js_min.rb",
      "lib/fewer/engines/less.rb",
      "lib/fewer/errors.rb",
      "lib/fewer/serializer.rb",
