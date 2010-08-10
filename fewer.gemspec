@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fewer}
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Pickles"]
-  s.date = %q{2010-07-25}
+  s.date = %q{2010-08-10}
   s.description = %q{Rack middleware to bundle assets and help you make fewer HTTP requests.}
   s.email = %q{spideryoung@gmail.com}
   s.extra_rdoc_files = [
@@ -45,6 +45,7 @@ Gem::Specification.new do |s|
   s.test_files = [
     "test/app_test.rb",
      "test/engine_test.rb",
+     "test/sass_engine_test.rb",
      "test/test_helper.rb"
   ]
 
