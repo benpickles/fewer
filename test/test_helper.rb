@@ -11,3 +11,14 @@ rescue LoadError
 end
 
 require 'fewer'
+
+module TestHelper
+  private
+    def decode(string)
+      Fewer::Serializer.decode(string)
+    end
+
+    def encode(obj)
+      Fewer::Serializer.encode(obj)
+    end
+end

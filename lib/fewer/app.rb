@@ -1,18 +1,17 @@
 module Fewer
   class App
-    attr_reader :app, :engine_klass, :cache, :mount, :root
+    attr_reader :engine_klass, :cache, :root
 
-    def initialize(app, options = {})
-      @app = app
+    def initialize(options = {})
       @engine_klass = options[:engine]
       @mount = options[:mount]
       @root = options[:root]
       @cache = options[:cache] || 3600 * 24 * 365
+      raise 'You need to define an :engine class' unless @engine_klass
+      raise 'You need to define a :root path' unless @root
     end
 
     def call(env)
-      return app.call(env) unless env['PATH_INFO'] =~ /^#{mount}/
-
       names = names_from_path(env['PATH_INFO'])
       engine = engine_klass.new(root, names)
       headers = {
@@ -29,7 +28,7 @@ module Fewer
 
     private
       def names_from_path(path)
-        encoded = File.basename(path.sub(/^#{mount}\/?/, ''), '.*')
+        encoded = File.basename(path, '.*')
         Serializer.decode(encoded)
       end
   end
