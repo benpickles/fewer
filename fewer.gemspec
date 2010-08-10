@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fewer}
-  s.version = "0.0.1"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Pickles"]
@@ -32,9 +32,11 @@ Gem::Specification.new do |s|
      "lib/fewer/engines/js_min.rb",
      "lib/fewer/engines/less.rb",
      "lib/fewer/errors.rb",
+     "lib/fewer/middleware.rb",
      "lib/fewer/serializer.rb",
      "test/app_test.rb",
      "test/engine_test.rb",
+     "test/middleware_test.rb",
      "test/test_helper.rb"
   ]
   s.homepage = %q{http://github.com/benpickles/fewer}
@@ -45,7 +47,7 @@ Gem::Specification.new do |s|
   s.test_files = [
     "test/app_test.rb",
      "test/engine_test.rb",
-     "test/sass_engine_test.rb",
+     "test/middleware_test.rb",
      "test/test_helper.rb"
   ]
 
