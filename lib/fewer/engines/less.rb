@@ -12,7 +12,9 @@ module Fewer
       end
 
       def read
-        ::Less::Engine.new(super).to_css
+        Dir.chdir root do
+          ::Less::Engine.new(super).to_css
+        end
       end
     end
   end

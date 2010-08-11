@@ -11,6 +11,7 @@ rescue LoadError
 end
 
 require 'fewer'
+require 'less'
 
 module TestHelper
   private
@@ -20,5 +21,9 @@ module TestHelper
 
     def encode(obj)
       Fewer::Serializer.encode(obj)
+    end
+
+    def template_root
+      File.expand_path('../templates', __FILE__)
     end
 end
