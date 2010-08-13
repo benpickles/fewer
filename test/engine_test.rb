@@ -37,6 +37,13 @@ class EngineTest < Test::Unit::TestCase
     end
   end
 
+  def test_can_deal_with_encoding_for_you
+    names = ['a', 'b']
+    engine = engine_klass_no_checking.new(template_root, names)
+    Fewer::Serializer.expects(:encode).with(names)
+    engine.encoded
+  end
+
   def test_less_import_command
     engine = Fewer::Engines::Less.new(template_root, ['style'])
     assert_nothing_raised do

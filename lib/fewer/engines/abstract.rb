@@ -16,6 +16,10 @@ module Fewer
         'text/plain'
       end
 
+      def encoded
+        Serializer.encode(names)
+      end
+
       def extension
       end
 
