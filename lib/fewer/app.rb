@@ -23,18 +23,21 @@ module Fewer
     end
 
     def call(env)
-      names = names_from_path(env['PATH_INFO'])
-      engine = engine_klass.new(root, names)
+      eng = engine(names_from_path(env['PATH_INFO']))
       headers = {
-        'Content-Type' => engine.content_type,
+        'Content-Type' => eng.content_type,
         'Cache-Control' => "public, max-age=#{cache}"
       }
 
-      [200, headers, [engine.read]]
+      [200, headers, [eng.read]]
     rescue Fewer::MissingSourceFileError => e
       [404, { 'Content-Type' => 'text/plain' }, [e.message]]
     rescue => e
       [500, { 'Content-Type' => 'text/plain' }, ["#{e.class}: #{e.message}"]]
+    end
+
+    def engine(names)
+      engine_klass.new(root, names)
     end
 
     private
