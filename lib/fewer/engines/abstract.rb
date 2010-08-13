@@ -5,7 +5,7 @@ module Fewer
 
       def initialize(root, names)
         @root = root
-        @names = names
+        @names = names.is_a?(Array) ? names : [names]
         check_paths!
       end
 

@@ -14,8 +14,13 @@ class EngineTest < Test::Unit::TestCase
     assert_equal ['./symbol', './ab'], engine.paths
   end
 
+  def test_converts_names_to_an_array
+    engine = engine_klass_no_checking.new(template_root, 'style')
+    assert_equal ['style'], engine.names
+  end
+
   def test_less_import_command
-    engine = Fewer::Engines::Less.new(template_root, 'style')
+    engine = Fewer::Engines::Less.new(template_root, ['style'])
     assert_nothing_raised do
       engine.read
     end
