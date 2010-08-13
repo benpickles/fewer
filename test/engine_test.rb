@@ -31,6 +31,12 @@ class EngineTest < Test::Unit::TestCase
     assert_equal ['style'], engine.names
   end
 
+  def test_raises_error_for_missing_file
+    assert_raises Fewer::MissingSourceFileError do
+      Fewer::Engines::Abstract.new(template_root, ['does-not-exist'])
+    end
+  end
+
   def test_less_import_command
     engine = Fewer::Engines::Less.new(template_root, ['style'])
     assert_nothing_raised do
