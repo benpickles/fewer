@@ -11,11 +11,16 @@ class AppTest < Test::Unit::TestCase
       :read => 'content'
     )
     @engine_klass = stub(:new => @engine)
-    @fewer_app = Fewer::App.new({
+    @fewer_app = Fewer::App.new(:name,
       :engine => @engine_klass,
       :root => 'root'
-    })
+    )
     @browser = Rack::Test::Session.new(Rack::MockSession.new(@fewer_app))
+  end
+
+  def test_can_retrieve_app_by_name
+    assert_nil Fewer::App[:not_name]
+    assert_equal @fewer_app, Fewer::App[:name]
   end
 
   def test_initialises_a_new_engine_with_a_single_file

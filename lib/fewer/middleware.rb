@@ -1,6 +1,7 @@
 module Fewer
   class MiddleWare
-    def initialize(app, options = {})
+    def initialize(app, name, options = {})
+      @name = name
       @options = options
       @app = app
       @mount = @options[:mount]
@@ -8,7 +9,7 @@ module Fewer
 
     def call(env)
       if env['PATH_INFO'] =~ /^#{@mount}/
-        App.new(@options).call(env)
+        App.new(@name, @options).call(env)
       else
         @app.call(env)
       end

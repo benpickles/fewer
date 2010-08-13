@@ -1,14 +1,25 @@
 module Fewer
   class App
-    attr_reader :engine_klass, :cache, :root
+    class << self
+      def [](name)
+        apps[name]
+      end
 
-    def initialize(options = {})
+      def apps
+        @apps ||= {}
+      end
+    end
+
+    attr_reader :name, :engine_klass, :cache, :root
+
+    def initialize(name, options = {})
       @engine_klass = options[:engine]
       @mount = options[:mount]
       @root = options[:root]
       @cache = options[:cache] || 3600 * 24 * 365
       raise 'You need to define an :engine class' unless @engine_klass
       raise 'You need to define a :root path' unless @root
+      self.class.apps[name] = self
     end
 
     def call(env)

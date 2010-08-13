@@ -14,7 +14,7 @@ class MiddlewareTest < Test::Unit::TestCase
 
     @app = Rack::Builder.new do
       map '/' do
-        use Fewer::MiddleWare,
+        use Fewer::MiddleWare, :name,
               :root => '/some/root/path',
               :engine => Fewer::Engines::Css,
               :mount => '/css'
