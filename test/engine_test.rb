@@ -4,9 +4,21 @@ class EngineTest < Test::Unit::TestCase
   include TestHelper
 
   def test_sanitise_paths
-    bad_files = ['./../private.txt', '/etc/passwd']
-    engine = engine_klass_no_checking.new('./happy-place', bad_files)
-    assert_equal ['./happy-place/private.txt', './happy-place/passwd'], engine.paths
+    files = [
+      'dir/ectory/file.js',
+      'sub/dir/ectory/file.js',
+      './../private.txt',
+      '/etc/passwd',
+      '/etc/../passwd'
+    ]
+    engine = engine_klass_no_checking.new('./happy-place', files)
+    assert_equal [
+      './happy-place/dir/ectory/file.js',
+      './happy-place/sub/dir/ectory/file.js',
+      './happy-place/./private.txt',
+      './happy-place/etc/passwd',
+      './happy-place/etc/passwd'
+    ], engine.paths
   end
 
   def test_stringify_paths

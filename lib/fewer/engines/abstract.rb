@@ -1,11 +1,14 @@
 module Fewer
   module Engines
     class Abstract
+      SANITISE_REGEXP = /^#{File::Separator}|\.\.#{File::Separator}/
+
       attr_reader :names, :root
 
       def initialize(root, names)
         @root = root
         @names = names.is_a?(Array) ? names : [names]
+        sanitise_names!
         check_paths!
       end
 
@@ -24,7 +27,7 @@ module Fewer
 
       def paths
         names.map { |name|
-          File.join(root, "#{File.basename(name.to_s)}#{extension}")
+          File.join(root, "#{name}#{extension}")
         }
       end
 
@@ -40,6 +43,12 @@ module Fewer
             files = missing.map { |path| path.to_s }.join("\n")
             raise Fewer::MissingSourceFileError.new("Missing source file#{'s' if missing.size > 1}:\n#{files}")
           end
+        end
+
+        def sanitise_names!
+          names.map! { |name|
+            name.to_s.gsub(SANITISE_REGEXP, '')
+          }
         end
     end
   end
