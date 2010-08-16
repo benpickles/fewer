@@ -3,11 +3,12 @@ module Fewer
     class Abstract
       SANITISE_REGEXP = /^#{File::Separator}|\.\.#{File::Separator}/
 
-      attr_reader :names, :root
+      attr_reader :names, :options, :root
 
-      def initialize(root, names)
+      def initialize(root, names, options = {})
         @root = root
         @names = names.is_a?(Array) ? names : [names]
+        @options = options
         sanitise_names!
         check_paths!
       end

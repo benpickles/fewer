@@ -10,10 +10,11 @@ module Fewer
       end
     end
 
-    attr_reader :name, :engine_klass, :cache, :root
+    attr_reader :cache, :engine_klass, :engine_options, :name, :root
 
     def initialize(name, options = {})
       @engine_klass = options[:engine]
+      @engine_options = options[:engine_options] || {}
       @mount = options[:mount]
       @root = options[:root]
       @cache = options[:cache] || 3600 * 24 * 365
@@ -37,7 +38,7 @@ module Fewer
     end
 
     def engine(names)
-      engine_klass.new(root, names)
+      engine_klass.new(root, names, engine_options)
     end
 
     private

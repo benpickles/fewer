@@ -1,3 +1,5 @@
+autoload :Closure, 'closure-compiler'
+
 module Fewer
   module Engines
     class Js < Abstract
@@ -7,6 +9,14 @@ module Fewer
 
       def extension
         '.js'
+      end
+
+      def read
+        if options[:min]
+          ::Closure::Compiler.new.compress(super)
+        else
+          super
+        end
       end
     end
   end

@@ -25,13 +25,13 @@ class AppTest < Test::Unit::TestCase
 
   def test_initialises_a_new_engine_with_a_single_file
     file = 'file'
-    @engine_klass.expects(:new).with('root', file).returns(@engine)
+    @engine_klass.expects(:new).with('root', file, {}).returns(@engine)
     @browser.get "/path/#{encode(file)}.css"
   end
 
   def test_initialises_a_new_engine_with_multiple_files
     files = ['file1', 'file2']
-    @engine_klass.expects(:new).with('root', files).returns(@engine)
+    @engine_klass.expects(:new).with('root', files, {}).returns(@engine)
     @browser.get "/path/#{encode(files)}.css"
   end
 
