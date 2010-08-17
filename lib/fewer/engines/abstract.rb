@@ -30,7 +30,7 @@ module Fewer
       end
 
       def paths
-        names.map { |name|
+        @paths ||= names.map { |name|
           File.join(root, "#{name}#{extension}")
         }
       end
