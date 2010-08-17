@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{fewer}
-  s.version = "0.1.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Pickles"]
-  s.date = %q{2010-08-10}
-  s.description = %q{Rack middleware to bundle assets and help you make fewer HTTP requests.}
+  s.date = %q{2010-08-17}
+  s.description = %q{Fewer is a Rack endpoint to bundle and cache assets and help you make fewer HTTP requests. Fewer extracts and combines a list of assets encoded in the URL and serves the response with far-future HTTP caching headers.}
   s.email = %q{spideryoung@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE",
@@ -29,21 +29,23 @@ Gem::Specification.new do |s|
      "lib/fewer/engines/abstract.rb",
      "lib/fewer/engines/css.rb",
      "lib/fewer/engines/js.rb",
-     "lib/fewer/engines/js_min.rb",
      "lib/fewer/engines/less.rb",
      "lib/fewer/errors.rb",
      "lib/fewer/middleware.rb",
+     "lib/fewer/rails_helpers.rb",
      "lib/fewer/serializer.rb",
      "test/app_test.rb",
      "test/engine_test.rb",
      "test/middleware_test.rb",
+     "test/templates/rounded.less",
+     "test/templates/style.less",
      "test/test_helper.rb"
   ]
   s.homepage = %q{http://github.com/benpickles/fewer}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.7}
-  s.summary = %q{Rack middleware to bundle assets and help you make fewer HTTP requests.}
+  s.summary = %q{Fewer is a Rack endpoint to bundle and cache assets and help you make fewer HTTP requests.}
   s.test_files = [
     "test/app_test.rb",
      "test/engine_test.rb",
