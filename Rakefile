@@ -5,8 +5,8 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "fewer"
-    gem.summary = %q{Rack middleware to bundle assets and help you make fewer HTTP requests.}
-    gem.description = %q{Rack middleware to bundle assets and help you make fewer HTTP requests.}
+    gem.summary = 'Fewer is a Rack endpoint to bundle and cache assets and help you make fewer HTTP requests.'
+    gem.description = 'Fewer is a Rack endpoint to bundle and cache assets and help you make fewer HTTP requests. Fewer extracts and combines a list of assets encoded in the URL and serves the response with far-future HTTP caching headers.'
     gem.email = 'spideryoung@gmail.com'
     gem.homepage = 'http://github.com/benpickles/fewer'
     gem.authors = ['Ben Pickles']
