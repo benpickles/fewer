@@ -26,8 +26,8 @@ module Fewer
 
       def mtime
         paths.map { |path|
-          File.mtime(path).to_i
-        }.sort.last
+          File.mtime(path)
+        }.max
       end
 
       def paths

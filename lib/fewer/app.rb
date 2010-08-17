@@ -27,7 +27,8 @@ module Fewer
       eng = engine(names_from_path(env['PATH_INFO']))
       headers = {
         'Content-Type' => eng.content_type,
-        'Cache-Control' => "public, max-age=#{cache}"
+        'Cache-Control' => "public, max-age=#{cache}",
+        'Last-Modified' => eng.mtime.rfc2822
       }
 
       [200, headers, [eng.read]]

@@ -8,6 +8,7 @@ class AppTest < Test::Unit::TestCase
     @engine = stub(
       :check_request_extension => true,
       :content_type => 'text/css',
+      :mtime => Time.utc(2010, 8, 17, 21, 5, 24),
       :read => 'content'
     )
     @engine_klass = stub(:new => @engine)
@@ -43,6 +44,11 @@ class AppTest < Test::Unit::TestCase
   def test_responds_with_cache_control
     @browser.get "/path/#{encode('file')}.css"
     assert_equal 'public, max-age=31536000', @browser.last_response.headers['Cache-Control']
+  end
+
+  def test_responds_with_last_modified
+    @browser.get "/path/#{encode('file')}.css"
+    assert_equal 'Tue, 17 Aug 2010 21:05:24 -0000', @browser.last_response.headers['Last-Modified']
   end
 
   def test_responds_with_bundled_content
