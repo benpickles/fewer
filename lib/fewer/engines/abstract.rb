@@ -30,6 +30,11 @@ module Fewer
         }.max
       end
 
+      def etag
+        # Sum of file modification times
+        paths.map { |path| File.mtime(path).to_i }.inject(:+).to_s
+      end
+
       def paths
         @paths ||= names.map { |name|
           File.join(root, "#{name}#{extension}")

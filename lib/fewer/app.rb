@@ -25,13 +25,20 @@ module Fewer
 
     def call(env)
       eng = engine(names_from_path(env['PATH_INFO']))
-      headers = {
-        'Content-Type' => eng.content_type,
-        'Cache-Control' => "public, max-age=#{cache}",
-        'Last-Modified' => eng.mtime.rfc2822
-      }
 
-      [200, headers, [eng.read]]
+      if env["HTTP_IF_NONE_MATCH"] && env["HTTP_IF_NONE_MATCH"] == eng.etag
+        Fewer.logger.debug "Fewer: returning 304 not modified"
+        [304, {}, []]
+      else
+        headers = {
+          'Content-Type' => eng.content_type,
+          'Cache-Control' => "public, max-age=#{cache}",
+          'Last-Modified' => eng.mtime.rfc2822,
+          'ETag' => eng.etag
+        }
+
+        [200, headers, [eng.read]]
+      end
     rescue Fewer::MissingSourceFileError => e
       [404, { 'Content-Type' => 'text/plain' }, [e.message]]
     rescue => e
