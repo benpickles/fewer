@@ -11,9 +11,11 @@ Using Fewer in your Rails app is easy, just initialize your Fewer apps and add t
     gem 'closure-compiler', :group => :production
 
     # config/initializers/fewer.rb
+    require 'fewer'
+
     Fewer::App.new(:javascripts,
       :engine => Fewer::Engines::Js,
-      :engine_options => { :min => Rails.env.production? }
+      :engine_options => { :min => Rails.env.production? },
       :root => Rails.root.join('app', 'javascripts')
     )
     Fewer::App.new(:stylesheets,
