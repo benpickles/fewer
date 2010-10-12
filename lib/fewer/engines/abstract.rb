@@ -30,6 +30,11 @@ module Fewer
         }.max || Time.now
       end
 
+      def etag
+        # Sum of file modification times
+        paths.map { |path| File.mtime(path).to_i }.inject(:+).to_s
+      end
+
       def read
         paths.map { |path|
           File.read(path)
