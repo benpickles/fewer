@@ -11,6 +11,10 @@ class SerializerTest < Test::Unit::TestCase
     FileUtils.touch fs('of.css')
   end
 
+  def teardown
+    FileUtils.rm_r fs
+  end
+
   def test_encode_first_file
     encoded = Fewer::Serializer.encode(fs, [
       fs('a.css')
@@ -48,6 +52,21 @@ class SerializerTest < Test::Unit::TestCase
     assert_equal '0000', encoded
   end
 
+  def test_encode_35_files
+    FileUtils.rm_r fs
+    FileUtils.mkdir_p fs
+
+    files = []
+    35.times do |i|
+      path = fs('%02d' % i + '.css')
+      FileUtils.touch path
+      files << path
+    end
+
+    encoded = Fewer::Serializer.encode(fs, files)
+    assert_equal '123456789abcdefghijklmnopqrstuvwxyz', encoded
+  end
+
   def test_decode_first_file
     decoded = Fewer::Serializer.decode(fs, '1000')
     assert_equal [
@@ -83,5 +102,20 @@ class SerializerTest < Test::Unit::TestCase
   def test_decode_invalid_file
     decoded = Fewer::Serializer.decode(fs, '0000')
     assert_equal [], decoded
+  end
+
+  def test_decode_35_files
+    FileUtils.rm_r fs
+    FileUtils.mkdir_p fs
+
+    files = []
+    35.times do |i|
+      path = fs('%02d' % i + '.css')
+      FileUtils.touch path
+      files << path
+    end
+
+    decoded = Fewer::Serializer.decode(fs, '123456789abcdefghijklmnopqrstuvwxyz')
+    assert_equal files, decoded
   end
 end
