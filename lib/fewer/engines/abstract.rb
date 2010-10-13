@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 module Fewer
   module Engines
     class Abstract
@@ -31,8 +33,8 @@ module Fewer
       end
 
       def etag
-        # Sum of file modification times
-        paths.map { |path| File.mtime(path).to_i }.inject(:+).to_s
+        # MD5 for concatenation of all files
+        Digest::MD5.hexdigest(paths.map { |path| File.read(path) }.join)
       end
 
       def paths
