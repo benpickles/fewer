@@ -4,8 +4,9 @@ module Fewer
       def decode(root, encoded)
         paths = ls(root)
         selected = Array.new(paths.length)
+        delimeter = encoded.index(',') ? ',' : //
 
-        encoded.split(//).each_with_index { |char, i|
+        encoded.split(delimeter).each_with_index { |char, i|
           position = char.to_i(36) - 1
           selected[position] = paths[i] if position > -1
         }
@@ -14,9 +15,11 @@ module Fewer
       end
 
       def encode(root, paths)
+        delimeter = paths.length > 35 ? ',' : ''
+
         ls(root).map { |path|
           ((paths.index(path) || -1) + 1).to_s(36)
-        }.join
+        }.join(delimeter)
       end
 
       private
