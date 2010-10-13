@@ -1,6 +1,10 @@
+require 'fewer'
+
+require 'fileutils'
 require 'test/unit'
 
 require 'rubygems'
+require 'less'
 require 'mocha'
 require 'rack/test'
 
@@ -10,17 +14,13 @@ rescue LoadError
   puts "You're missing out on pretty colours! `gem install leftright`"
 end
 
-require 'fewer'
-require 'less'
+require 'fakefs'
 
 module TestHelper
   private
-    def decode(string)
-      Fewer::Serializer.decode(string)
-    end
-
-    def encode(obj)
-      Fewer::Serializer.encode(obj)
+    def fs(*args)
+      @fs_root ||= File.expand_path('../fs', __FILE__)
+      File.join(@fs_root, *args)
     end
 
     def template_root

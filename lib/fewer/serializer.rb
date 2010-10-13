@@ -1,30 +1,32 @@
-require 'base64'
-
 module Fewer
   module Serializer
-    class BadString < RuntimeError; end
-
     class << self
-      def b64_decode(string)
-        padding_length = string.length % 4
-        Base64.decode64(string + '=' * padding_length)
+      def decode(root, encoded)
+        paths = ls(root)
+        selected = Array.new(paths.length)
+
+        encoded.split(//).each_with_index { |char, i|
+          position = char.to_i - 1
+          selected[position] = paths[i] if position > -1
+        }
+
+        selected.compact
       end
 
-      def b64_encode(string)
-        Base64.encode64(string).tr("\n=",'')
+      def encode(root, paths)
+        ls(root).map { |path|
+          (paths.index(path) || -1) + 1
+        }.join
       end
 
-      def marshal_decode(string)
-        Marshal.load(b64_decode(string))
-      rescue TypeError, ArgumentError => e
-        raise BadString, "couldn't decode #{string} - got #{e}"
-      end
-      alias_method :decode, :marshal_decode
+      private
+        def ls(root)
+          pattern = File.join(root, '**', '*.*')
 
-      def marshal_encode(object)
-        b64_encode(Marshal.dump(object))
-      end
-      alias_method :encode, :marshal_encode
+          Dir.glob(pattern).delete_if { |path|
+            File.directory?(path)
+          }
+        end
     end
   end
 end
