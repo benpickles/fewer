@@ -18,8 +18,8 @@ module Fewer
       @mount = options[:mount]
       @root = options[:root]
       @cache = options[:cache] || 3600 * 24 * 365
-      raise 'You need to define an :engine class' unless @engine_klass
-      raise 'You need to define a :root path' unless @root
+      raise ArgumentError.new('You need to define an :engine class') unless @engine_klass
+      raise ArgumentError.new('You need to define a :root path') unless @root
       self.class.apps[name] = self
     end
 
