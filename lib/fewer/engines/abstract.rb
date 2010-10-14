@@ -6,7 +6,7 @@ module Fewer
       attr_reader :options, :paths, :root
 
       def initialize(root, paths, options = {})
-        @root = root
+        @root = root.to_s
         @paths = paths
         @options = options
         sanitise_paths!
@@ -49,6 +49,7 @@ module Fewer
 
         def sanitise_paths!
           paths.map! { |path|
+            path = path.to_s
             path.gsub!(SANITISE_REGEXP, '')
             path.replace(File.join(root, path)) if path[0, root.length] != root
             path

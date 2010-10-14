@@ -7,6 +7,12 @@ class EngineTest < Test::Unit::TestCase
     FakeFS::FileSystem.clear
   end
 
+  def test_copes_with_pathnames
+    root = Pathname.new(fs)
+    path = Pathname.new(touch('a.css'))
+    engine = Fewer::Engines::Abstract.new(root, [path])
+  end
+
   def test_sanitise_paths
     paths = [
       '/root/file.css',

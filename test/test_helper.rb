@@ -1,5 +1,6 @@
 require 'fewer'
 require 'fileutils'
+require 'pathname'
 require 'test/unit'
 
 require 'rubygems'
