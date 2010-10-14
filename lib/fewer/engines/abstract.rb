@@ -1,15 +1,15 @@
 module Fewer
   module Engines
     class Abstract
-      SANITISE_REGEXP = /^#{File::Separator}|\.\.#{File::Separator}/
+      SANITISE_REGEXP = /\.?\.#{File::Separator}/
 
-      attr_reader :names, :options, :root
+      attr_reader :options, :paths, :root
 
-      def initialize(root, names, options = {})
+      def initialize(root, paths, options = {})
         @root = root
-        @names = names.is_a?(Array) ? names : [names]
+        @paths = paths
         @options = options
-        sanitise_names!
+        sanitise_paths!
         check_paths!
       end
 
@@ -18,7 +18,7 @@ module Fewer
       end
 
       def encoded
-        Serializer.encode(names)
+        Serializer.encode(root, paths)
       end
 
       def extension
@@ -30,12 +30,6 @@ module Fewer
         }.max
       end
 
-      def paths
-        @paths ||= names.map { |name|
-          File.join(root, "#{name}#{extension}")
-        }
-      end
-
       def read
         paths.map { |path|
           File.read(path)
@@ -44,15 +38,20 @@ module Fewer
 
       private
         def check_paths!
-          if (missing = paths.reject { |path| File.exist?(path) }).any?
-            files = missing.map { |path| path.to_s }.join("\n")
-            raise Fewer::MissingSourceFileError.new("Missing source file#{'s' if missing.size > 1}:\n#{files}")
+          missing = paths.reject { |path| File.exist?(path) }
+
+          if missing.any?
+            raise Fewer::MissingSourceFileError.new(
+              "Missing source file#{'s' if missing.size > 1}:\n" +
+              missing.join("\n"))
           end
         end
 
-        def sanitise_names!
-          names.map! { |name|
-            name.to_s.gsub(SANITISE_REGEXP, '')
+        def sanitise_paths!
+          paths.map! { |path|
+            path.gsub!(SANITISE_REGEXP, '')
+            path.replace(File.join(root, path)) if path[0, root.length] != root
+            path
           }
         end
     end

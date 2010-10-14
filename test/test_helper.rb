@@ -16,6 +16,12 @@ end
 
 require 'fakefs'
 
+class FakeFS::File
+  def self.join(*parts)
+    RealFile.join(parts)
+  end
+end
+
 module TestHelper
   private
     def fs(path = '')
