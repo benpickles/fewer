@@ -27,7 +27,7 @@ module Fewer
       def mtime
         paths.map { |path|
           File.mtime(path)
-        }.max
+        }.max || Time.now
       end
 
       def read

@@ -31,6 +31,11 @@ class EngineTest < Test::Unit::TestCase
     end
   end
 
+  def test_mtime_is_not_nil
+    engine = Fewer::Engines::Abstract.new(fs, [])
+    assert !engine.mtime.nil?
+  end
+
   def test_can_deal_with_encoding_for_you
     paths = [touch('a.css'), touch('a.css')]
     engine = Fewer::Engines::Abstract.new(fs, paths)
