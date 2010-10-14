@@ -16,4 +16,3 @@ module Fewer
     end
   end
 end
-

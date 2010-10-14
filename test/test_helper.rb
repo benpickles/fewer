@@ -1,18 +1,12 @@
 require 'fewer'
-
 require 'fileutils'
 require 'test/unit'
 
 require 'rubygems'
+require 'leftright'
 require 'less'
 require 'mocha'
 require 'rack/test'
-
-begin
-  require 'leftright'
-rescue LoadError
-  puts "You're missing out on pretty colours! `gem install leftright`"
-end
 
 require 'fakefs'
 
@@ -24,6 +18,14 @@ end
 
 module TestHelper
   private
+    def decode(encoded)
+      Fewer::Serializer.decode(fs, encoded)
+    end
+
+    def encode(paths)
+      Fewer::Serializer.encode(fs, paths)
+    end
+
     def fs(path = '')
       root = File.expand_path('../fs', __FILE__)
       FileUtils.mkdir_p(root)

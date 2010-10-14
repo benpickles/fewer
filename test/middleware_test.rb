@@ -27,7 +27,7 @@ class MiddlewareTest < Test::Unit::TestCase
   end
 
   def test_middleware_intercepts_path
-    @browser.get "/css/#{encode('file')}.css"
+    @browser.get '/css/blah.css'
     assert_equal 'content', @browser.last_response.body
     assert_equal 'text/css', @browser.last_response.content_type
   end
