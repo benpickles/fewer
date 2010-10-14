@@ -4,15 +4,15 @@ class SerializerTest < Test::Unit::TestCase
   include TestHelper
 
   def setup
-    FileUtils.mkdir_p fs('nested')
-    FileUtils.touch fs('a.css')
-    FileUtils.touch fs('list.css')
-    FileUtils.touch fs('nested', 'files.css')
-    FileUtils.touch fs('of.css')
+    FileUtils.mkdir_p(fs('nested'))
+    touch('a.css')
+    touch('list.css')
+    touch('nested/files.css')
+    touch('of.css')
   end
 
   def teardown
-    FileUtils.rm_r fs
+    FakeFS::FileSystem.clear
   end
 
   def test_encode_first_file
@@ -32,7 +32,7 @@ class SerializerTest < Test::Unit::TestCase
   def test_encode_some_files
     encoded = Fewer::Serializer.encode(fs, [
       fs('a.css'),
-      fs('nested', 'files.css'),
+      fs('nested/files.css'),
       fs('of.css')
     ])
     assert_equal '1023', encoded
@@ -42,7 +42,7 @@ class SerializerTest < Test::Unit::TestCase
     encoded = Fewer::Serializer.encode(fs, [
       fs('of.css'),
       fs('a.css'),
-      fs('nested', 'files.css')
+      fs('nested/files.css')
     ])
     assert_equal '2031', encoded
   end
@@ -53,14 +53,11 @@ class SerializerTest < Test::Unit::TestCase
   end
 
   def test_encode_35_files
-    FileUtils.rm_r fs
-    FileUtils.mkdir_p fs
+    FakeFS::FileSystem.clear
 
     files = []
     35.times do |i|
-      path = fs('%02d' % i + '.css')
-      FileUtils.touch path
-      files << path
+      files << touch('%02d' % i + '.css')
     end
 
     encoded = Fewer::Serializer.encode(fs, files)
@@ -68,14 +65,11 @@ class SerializerTest < Test::Unit::TestCase
   end
 
   def test_encode_99_files
-    FileUtils.rm_r fs
-    FileUtils.mkdir_p fs
+    FakeFS::FileSystem.clear
 
     files = []
     99.times do |i|
-      path = fs('%02d' % i + '.css')
-      FileUtils.touch path
-      files << path
+      files << touch('%02d' % i + '.css')
     end
 
     expected = '1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t' +
@@ -103,7 +97,7 @@ class SerializerTest < Test::Unit::TestCase
     decoded = Fewer::Serializer.decode(fs, '1023')
     assert_equal [
       fs('a.css'),
-      fs('nested', 'files.css'),
+      fs('nested/files.css'),
       fs('of.css')
     ], decoded
   end
@@ -113,7 +107,7 @@ class SerializerTest < Test::Unit::TestCase
     assert_equal [
       fs('of.css'),
       fs('a.css'),
-      fs('nested', 'files.css')
+      fs('nested/files.css')
     ], decoded
   end
 
@@ -123,14 +117,11 @@ class SerializerTest < Test::Unit::TestCase
   end
 
   def test_decode_35_files
-    FileUtils.rm_r fs
-    FileUtils.mkdir_p fs
+    FakeFS::FileSystem.clear
 
     files = []
     35.times do |i|
-      path = fs('%02d' % i + '.css')
-      FileUtils.touch path
-      files << path
+      files << touch('%02d' % i + '.css')
     end
 
     decoded = Fewer::Serializer.decode(fs, '123456789abcdefghijklmnopqrstuvwxyz')
@@ -138,14 +129,11 @@ class SerializerTest < Test::Unit::TestCase
   end
 
   def test_decode_99_files
-    FileUtils.rm_r fs
-    FileUtils.mkdir_p fs
+    FakeFS::FileSystem.clear
 
     files = []
     99.times do |i|
-      path = fs('%02d' % i + '.css')
-      FileUtils.touch path
-      files << path
+      files << touch('%02d' % i + '.css')
     end
 
     encoded = '1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t' +

@@ -18,12 +18,19 @@ require 'fakefs'
 
 module TestHelper
   private
-    def fs(*args)
-      @fs_root ||= File.expand_path('../fs', __FILE__)
-      File.join(@fs_root, *args)
+    def fs(path = '')
+      root = File.expand_path('../fs', __FILE__)
+      FileUtils.mkdir_p(root)
+      File.join(root, path)
     end
 
     def template_root
       File.expand_path('../templates', __FILE__)
+    end
+
+    def touch(path)
+      pathed = fs(path)
+      FileUtils.touch(pathed)
+      pathed
     end
 end
