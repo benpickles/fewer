@@ -19,14 +19,14 @@ class SerializerTest < Test::Unit::TestCase
     encoded = Fewer::Serializer.encode(fs, [
       fs('a.css')
     ])
-    assert_equal '1000', encoded
+    assert_equal '0', encoded
   end
 
   def test_encode_last_file
     encoded = Fewer::Serializer.encode(fs, [
       fs('of.css')
     ])
-    assert_equal '0001', encoded
+    assert_equal '3', encoded
   end
 
   def test_encode_some_files
@@ -35,7 +35,7 @@ class SerializerTest < Test::Unit::TestCase
       fs('nested/files.css'),
       fs('of.css')
     ])
-    assert_equal '1023', encoded
+    assert_equal '023', encoded
   end
 
   def test_encode_some_files_in_a_different_order
@@ -44,24 +44,24 @@ class SerializerTest < Test::Unit::TestCase
       fs('a.css'),
       fs('nested/files.css')
     ])
-    assert_equal '2031', encoded
+    assert_equal '302', encoded
   end
 
   def test_encode_invalid_file
     encoded = Fewer::Serializer.encode(fs, ['doesnt-exist.css'])
-    assert_equal '0000', encoded
+    assert_equal '', encoded
   end
 
   def test_encode_35_files
     FakeFS::FileSystem.clear
 
     files = []
-    35.times do |i|
+    36.times do |i|
       files << touch('%02d' % i + '.css')
     end
 
     encoded = Fewer::Serializer.encode(fs, files)
-    assert_equal '123456789abcdefghijklmnopqrstuvwxyz', encoded
+    assert_equal '0123456789abcdefghijklmnopqrstuvwxyz', encoded
   end
 
   def test_encode_99_files
@@ -72,29 +72,29 @@ class SerializerTest < Test::Unit::TestCase
       files << touch('%02d' % i + '.css')
     end
 
-    expected = '1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t' +
+    expected = '0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t' +
       ',u,v,w,x,y,z,10,11,12,13,14,15,16,17,18,19,1a,1b,1c,1d,1e,1f,1g,1h,' +
       '1i,1j,1k,1l,1m,1n,1o,1p,1q,1r,1s,1t,1u,1v,1w,1x,1y,1z,20,21,22,23,24' +
-      ',25,26,27,28,29,2a,2b,2c,2d,2e,2f,2g,2h,2i,2j,2k,2l,2m,2n,2o,2p,2q,2r'
+      ',25,26,27,28,29,2a,2b,2c,2d,2e,2f,2g,2h,2i,2j,2k,2l,2m,2n,2o,2p,2q'
     assert_equal expected, Fewer::Serializer.encode(fs, files)
   end
 
   def test_decode_first_file
-    decoded = Fewer::Serializer.decode(fs, '1000')
+    decoded = Fewer::Serializer.decode(fs, '0')
     assert_equal [
       fs('a.css')
     ], decoded
   end
 
   def test_decode_last_file
-    decoded = Fewer::Serializer.decode(fs, '0001')
+    decoded = Fewer::Serializer.decode(fs, '3')
     assert_equal [
       fs('of.css')
     ], decoded
   end
 
   def test_decode_some_files
-    decoded = Fewer::Serializer.decode(fs, '1023')
+    decoded = Fewer::Serializer.decode(fs, '023')
     assert_equal [
       fs('a.css'),
       fs('nested/files.css'),
@@ -103,7 +103,7 @@ class SerializerTest < Test::Unit::TestCase
   end
 
   def test_decode_some_files_in_a_different_order
-    decoded = Fewer::Serializer.decode(fs, '2031')
+    decoded = Fewer::Serializer.decode(fs, '302')
     assert_equal [
       fs('of.css'),
       fs('a.css'),
@@ -112,7 +112,7 @@ class SerializerTest < Test::Unit::TestCase
   end
 
   def test_decode_invalid_file
-    decoded = Fewer::Serializer.decode(fs, '0000')
+    decoded = Fewer::Serializer.decode(fs, '')
     assert_equal [], decoded
   end
 
@@ -120,11 +120,11 @@ class SerializerTest < Test::Unit::TestCase
     FakeFS::FileSystem.clear
 
     files = []
-    35.times do |i|
+    36.times do |i|
       files << touch('%02d' % i + '.css')
     end
 
-    decoded = Fewer::Serializer.decode(fs, '123456789abcdefghijklmnopqrstuvwxyz')
+    decoded = Fewer::Serializer.decode(fs, '0123456789abcdefghijklmnopqrstuvwxyz')
     assert_equal files, decoded
   end
 
@@ -136,10 +136,10 @@ class SerializerTest < Test::Unit::TestCase
       files << touch('%02d' % i + '.css')
     end
 
-    encoded = '1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t' +
+    encoded = '0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t' +
       ',u,v,w,x,y,z,10,11,12,13,14,15,16,17,18,19,1a,1b,1c,1d,1e,1f,1g,1h,' +
       '1i,1j,1k,1l,1m,1n,1o,1p,1q,1r,1s,1t,1u,1v,1w,1x,1y,1z,20,21,22,23,24' +
-      ',25,26,27,28,29,2a,2b,2c,2d,2e,2f,2g,2h,2i,2j,2k,2l,2m,2n,2o,2p,2q,2r'
+      ',25,26,27,28,29,2a,2b,2c,2d,2e,2f,2g,2h,2i,2j,2k,2l,2m,2n,2o,2p,2q'
     assert_equal files, Fewer::Serializer.decode(fs, encoded)
   end
 end
