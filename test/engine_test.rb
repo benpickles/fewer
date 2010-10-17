@@ -15,6 +15,7 @@ class EngineTest < Test::Unit::TestCase
 
   def test_sanitise_paths
     paths = [
+      'a.css',
       '/root/file.css',
       '/root/../passwd',
       '/root/./passwd',
@@ -23,6 +24,7 @@ class EngineTest < Test::Unit::TestCase
     ]
     engine = engine_klass_no_checking.new('/root', paths)
     assert_equal [
+      '/root/a.css',
       '/root/file.css',
       '/root/passwd',
       '/root/passwd',
