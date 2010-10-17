@@ -38,7 +38,7 @@ module Fewer
       end
 
       def read
-        paths.map { |path|
+        @read ||= paths.map { |path|
           File.read(path)
         }.join("\n")
       end
