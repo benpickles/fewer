@@ -59,6 +59,27 @@ class IntegrationTest < Test::Unit::TestCase
     assert_equal 200, @browser.last_response.status
   end
 
+  def test_responds_with_304_for_not_modified_requests
+    file = touch('a.css')
+    path = "/#{encode([path])}"
+    @browser.get path
+    etag = @browser.last_response.headers['ETag']
+    @browser.header 'IF_NONE_MATCH', etag
+    @browser.get path
+    assert_equal 304, @browser.last_response.status
+  end
+
+  def test_responds_with_200_for_modified_requests
+    file = touch('a.css')
+    path = "/#{encode([path])}"
+    @browser.get path
+    File.open(fs('a.css'), 'w') { |f| f.write('blah') }
+    etag = @browser.last_response.headers['ETag']
+    @browser.header 'IF_NONE_MATCH', etag
+    @browser.get path
+    assert_equal 200, @browser.last_response.status
+  end
+
   def test_responds_with_404_for_missing_source
     Fewer::Engines::Css.stubs(:new).raises(Fewer::MissingSourceFileError)
     @browser.get '/blah.css'
