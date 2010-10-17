@@ -12,8 +12,10 @@ module Fewer
       end
 
       def read
+        bundled = super
+
         Dir.chdir root do
-          ::Less::Engine.new(super).to_css
+          ::Less::Engine.new(bundled).to_css
         end
       end
     end

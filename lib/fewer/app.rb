@@ -18,8 +18,8 @@ module Fewer
       @mount = options[:mount]
       @root = options[:root]
       @cache = options[:cache] || 3600 * 24 * 365
-      raise 'You need to define an :engine class' unless @engine_klass
-      raise 'You need to define a :root path' unless @root
+      raise ArgumentError.new('You need to define an :engine class') unless @engine_klass
+      raise ArgumentError.new('You need to define a :root path') unless @root
       self.class.apps[name] = self
     end
 
@@ -34,7 +34,7 @@ module Fewer
       [200, headers, [eng.read]]
     rescue Fewer::MissingSourceFileError => e
       [404, { 'Content-Type' => 'text/plain' }, [e.message]]
-    rescue => e
+    rescue StandardError => e
       [500, { 'Content-Type' => 'text/plain' }, ["#{e.class}: #{e.message}"]]
     end
 
@@ -45,7 +45,7 @@ module Fewer
     private
       def names_from_path(path)
         encoded = File.basename(path, '.*')
-        Serializer.decode(encoded)
+        Serializer.decode(root, encoded)
       end
   end
 end

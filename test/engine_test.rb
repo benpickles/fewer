@@ -3,49 +3,62 @@ require 'test_helper'
 class EngineTest < Test::Unit::TestCase
   include TestHelper
 
+  def teardown
+    FakeFS::FileSystem.clear
+  end
+
+  def test_copes_with_pathnames
+    root = Pathname.new(fs)
+    path = Pathname.new(touch('a.css'))
+    engine = Fewer::Engines::Abstract.new(root, [path])
+  end
+
   def test_sanitise_paths
-    files = [
-      'dir/ectory/file.js',
-      'sub/dir/ectory/file.js',
-      './../private.txt',
+    paths = [
+      '/root/file.css',
+      '/root/../passwd',
+      '/root/./passwd',
       '/etc/passwd',
       '/etc/../passwd'
     ]
-    engine = engine_klass_no_checking.new('./happy-place', files)
+    engine = engine_klass_no_checking.new('/root', paths)
     assert_equal [
-      './happy-place/dir/ectory/file.js',
-      './happy-place/sub/dir/ectory/file.js',
-      './happy-place/./private.txt',
-      './happy-place/etc/passwd',
-      './happy-place/etc/passwd'
+      '/root/file.css',
+      '/root/passwd',
+      '/root/passwd',
+      '/root/etc/passwd',
+      '/root/etc/passwd'
     ], engine.paths
-  end
-
-  def test_stringify_paths
-    engine = engine_klass_no_checking.new('.', [:symbol, { :a => :b }])
-    assert_equal ['./symbol', './ab'], engine.paths
-  end
-
-  def test_converts_names_to_an_array
-    engine = engine_klass_no_checking.new(template_root, 'style')
-    assert_equal ['style'], engine.names
   end
 
   def test_raises_error_for_missing_file
     assert_raises Fewer::MissingSourceFileError do
-      Fewer::Engines::Abstract.new(template_root, ['does-not-exist'])
+      Fewer::Engines::Abstract.new('root', ['does-not-exist'])
     end
   end
 
+  def test_mtime_is_not_nil
+    engine = Fewer::Engines::Abstract.new(fs, [])
+    assert !engine.mtime.nil?
+  end
+
   def test_can_deal_with_encoding_for_you
-    names = ['a', 'b']
-    engine = engine_klass_no_checking.new(template_root, names)
-    Fewer::Serializer.expects(:encode).with(names)
+    paths = [touch('a.css'), touch('a.css')]
+    engine = Fewer::Engines::Abstract.new(fs, paths)
+    Fewer::Serializer.expects(:encode).with(fs, paths)
     engine.encoded
   end
 
   def test_less_import_command
-    engine = Fewer::Engines::Less.new(template_root, ['style'])
+    import = touch('import.less')
+    style = fs('style.less')
+
+    File.open(style, 'w') do |f|
+      f.write '@import "import";'
+    end
+
+    engine = Fewer::Engines::Less.new(fs, [style])
+
     assert_nothing_raised do
       engine.read
     end
