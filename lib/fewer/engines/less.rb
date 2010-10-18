@@ -3,13 +3,8 @@ autoload :Less, 'less'
 module Fewer
   module Engines
     class Less < Abstract
-      def content_type
-        'text/css'
-      end
-
-      def extension
-        '.less'
-      end
+      self.content_type = 'text/css'
+      self.extension = '.less'
 
       def read
         bundled = super

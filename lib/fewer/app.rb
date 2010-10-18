@@ -31,7 +31,7 @@ module Fewer
         [304, {}, []]
       else
         headers = {
-          'Content-Type' => eng.content_type,
+          'Content-Type' => engine_klass.content_type || 'text/plain',
           'Cache-Control' => "public, max-age=#{cache}",
           'Last-Modified' => eng.mtime.rfc2822,
           'ETag' => eng.etag
