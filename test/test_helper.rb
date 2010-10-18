@@ -33,10 +33,6 @@ module TestHelper
       File.join(root, path)
     end
 
-    def template_root
-      File.expand_path('../templates', __FILE__)
-    end
-
     def touch(path)
       pathed = fs(path)
       FileUtils.touch(pathed)
