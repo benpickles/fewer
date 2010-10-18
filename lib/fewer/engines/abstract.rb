@@ -1,3 +1,5 @@
+require 'digest/md5'
+
 module Fewer
   module Engines
     class Abstract
@@ -28,6 +30,11 @@ module Fewer
         paths.map { |path|
           File.mtime(path)
         }.max || Time.now
+      end
+
+      def etag
+        # MD5 for concatenation of all files
+        Digest::MD5.hexdigest(paths.map { |path| File.read(path) }.join)
       end
 
       def read
