@@ -6,17 +6,16 @@ module Fewer
         ext && File.extname(source) == '' ? "#{source}#{ext}" : source
       }
 
-      engines = if config.perform_caching
-        [app.engine(sources)]
+      if config.perform_caching
+        engine = app.engine(sources)
+        ["#{engine.mtime.to_i.to_s(36)}/#{engine.encoded}#{friendly_ext}"]
       else
         sources.map { |source|
-          app.engine([source])
+          engine = app.engine([source])
+          friendly_name = File.basename(source, '.*')
+          "#{engine.mtime.to_i.to_s(36)}/#{engine.encoded}-#{friendly_name}#{friendly_ext}"
         }
       end
-
-      engines.map { |engine|
-        "#{engine.mtime.to_i.to_s(36)}/#{engine.encoded}#{friendly_ext}"
-      }
     end
 
     def fewer_javascripts_tag(*sources)

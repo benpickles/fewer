@@ -32,7 +32,7 @@ class RailsHelpersTest < Test::Unit::TestCase
 
   def test_multiple_stylesheet_with_no_caching
     @config.stubs(:perform_caching => false)
-    @helper.expects(:stylesheet_link_tag).with(['l7bel0/qwerty.css', 'l7bel0/qwerty.css'], {})
+    @helper.expects(:stylesheet_link_tag).with(['l7bel0/qwerty-a.css', 'l7bel0/qwerty-b.css'], {})
     @helper.fewer_stylesheets_tag 'a.fewer', 'b.fewer'
   end
 
@@ -49,7 +49,7 @@ class RailsHelpersTest < Test::Unit::TestCase
 
   def test_multiple_javascript_with_no_caching
     @config.stubs(:perform_caching => false)
-    @helper.expects(:javascript_include_tag).with(['l7bel0/qwerty.js', 'l7bel0/qwerty.js'], {})
+    @helper.expects(:javascript_include_tag).with(['l7bel0/qwerty-a.js', 'l7bel0/qwerty-b.js'], {})
     @helper.fewer_javascripts_tag 'a.fewer', 'b.fewer'
   end
 end

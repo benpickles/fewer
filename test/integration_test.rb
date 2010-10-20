@@ -24,6 +24,12 @@ class IntegrationTest < Test::Unit::TestCase
     @browser.get "/#{encode(paths)}"
   end
 
+  def test_strip_metadata_from_path
+    paths = [touch('a.css'), touch('b.css')]
+    Fewer::Engines::Css.expects(:new).with(fs, paths, {}).returns(stub)
+    @browser.get "/#{encode(paths)}-blah.css"
+  end
+
   def test_responds_with_engine_content_type
     path = touch('a.css')
     @browser.get "/#{encode([path])}"
