@@ -4,6 +4,7 @@ require 'pathname'
 require 'test/unit'
 
 require 'rubygems'
+require 'active_support/core_ext/array/extract_options'
 require 'leftright'
 require 'less'
 require 'mocha'
