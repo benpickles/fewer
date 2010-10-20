@@ -22,8 +22,8 @@ Using Fewer in your Rails app is easy, just initialize your Fewer apps and add t
     )
 
     # config/routes.rb
-    match '/javascripts/:data.js', :to => Fewer::App[:javascripts]
-    match '/stylesheets/:data.css', :to => Fewer::App[:stylesheets]
+    match '/javascripts/*data.js', :to => Fewer::App[:javascripts]
+    match '/stylesheets/*data.css', :to => Fewer::App[:stylesheets]
 
     # app/helpers/application_helper.rb
     module ApplicationHelper
