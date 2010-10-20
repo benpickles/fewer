@@ -7,7 +7,7 @@ module Fewer
 
         encoded.split(delimeter).map { |char|
           files[char.to_i(36)]
-        }
+        }.compact
       end
 
       def encode(root, paths)

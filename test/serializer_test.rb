@@ -116,6 +116,11 @@ class SerializerTest < Test::Unit::TestCase
     assert_equal [], decoded
   end
 
+  def test_decode_another_invalid_file
+    decoded = Fewer::Serializer.decode(fs, 'z')
+    assert_equal [], decoded
+  end
+
   def test_decode_35_files
     FakeFS::FileSystem.clear
 
