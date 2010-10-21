@@ -4,6 +4,7 @@ class SerializerTest < Test::Unit::TestCase
   include TestHelper
 
   def setup
+    FakeFS.activate!
     FileUtils.mkdir_p(fs('nested'))
     touch('a.css')
     touch('list.css')
@@ -13,6 +14,7 @@ class SerializerTest < Test::Unit::TestCase
 
   def teardown
     FakeFS::FileSystem.clear
+    FakeFS.deactivate!
   end
 
   def test_encode_first_file
