@@ -42,6 +42,11 @@ class RailsHelpersTest < Test::Unit::TestCase
     @helper.fewer_stylesheets_tag 'a.fewer', 'b.fewer', options
   end
 
+  def test_stylesheet_cache_option_removed
+    @helper.expects(:stylesheet_link_tag).with(['l7bel0/qwerty.css'], {})
+    @helper.fewer_stylesheets_tag 'a.fewer', 'b.fewer', { :cache => true }
+  end
+
   def test_single_javascript_with_caching
     @helper.expects(:javascript_include_tag).with(['l7bel0/qwerty.js'], {})
     @helper.fewer_javascripts_tag 'a.fewer', 'b.fewer'

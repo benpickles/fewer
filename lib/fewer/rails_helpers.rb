@@ -20,12 +20,14 @@ module Fewer
 
     def fewer_javascripts_tag(*sources)
       options = sources.extract_options!
+      options.delete(:cache)
       app = Fewer::App[:javascripts]
       javascript_include_tag fewer_encode_sources(app, sources, '.js'), options
     end
 
     def fewer_stylesheets_tag(*sources)
       options = sources.extract_options!
+      options.delete(:cache)
       app = Fewer::App[:stylesheets]
       stylesheet_link_tag fewer_encode_sources(app, sources, '.css'), options
     end
