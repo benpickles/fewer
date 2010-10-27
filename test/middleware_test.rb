@@ -6,8 +6,6 @@ class MiddlewareTest < Test::Unit::TestCase
   def setup
     @app = stub
     @engine = stub(
-      :check_request_extension => true,
-      :content_type => 'text/css',
       :etag => '',
       :mtime => Time.utc(2010, 8, 17, 21, 5, 24),
       :read => 'content'

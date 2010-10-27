@@ -5,6 +5,10 @@ module Fewer
     class Abstract
       SANITISE_REGEXP = /\.?\.#{File::Separator}/
 
+      class << self
+        attr_accessor :content_type, :extension
+      end
+
       attr_reader :options, :paths, :root
 
       def initialize(root, paths, options = {})
@@ -15,15 +19,8 @@ module Fewer
         check_paths!
       end
 
-      def content_type
-        'text/plain'
-      end
-
       def encoded
         Serializer.encode(root, paths)
-      end
-
-      def extension
       end
 
       def mtime

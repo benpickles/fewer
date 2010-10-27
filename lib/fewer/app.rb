@@ -24,14 +24,14 @@ module Fewer
     end
 
     def call(env)
-      eng = engine(names_from_path(env['PATH_INFO']))
+      eng = engine(sources_from_path(env['PATH_INFO']))
 
       if env["HTTP_IF_NONE_MATCH"] && env["HTTP_IF_NONE_MATCH"] == eng.etag
         Fewer.logger.debug "Fewer: returning 304 not modified"
         [304, {}, []]
       else
         headers = {
-          'Content-Type' => eng.content_type,
+          'Content-Type' => engine_klass.content_type || 'text/plain',
           'Cache-Control' => "public, max-age=#{cache}",
           'Last-Modified' => eng.mtime.rfc2822,
           'ETag' => eng.etag
@@ -50,8 +50,8 @@ module Fewer
     end
 
     private
-      def names_from_path(path)
-        encoded = File.basename(path, '.*')
+      def sources_from_path(path)
+        encoded = File.basename(path, '.*').split('-').first
         Serializer.decode(root, encoded)
       end
   end

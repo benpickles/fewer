@@ -1,13 +1,35 @@
 module Fewer
   module RailsHelpers
-    def fewer_javascripts_tag(*names)
-      engine = Fewer::App[:javascripts].engine(names)
-      javascript_include_tag "#{engine.encoded}.js?#{engine.mtime.to_i}"
+    def fewer_encode_sources(app, sources, friendly_ext = nil)
+      ext = app.engine_klass.extension
+      sources.map! { |source|
+        ext && source[-ext.length, ext.length] != ext ? "#{source}#{ext}" : source
+      }
+
+      if config.perform_caching
+        engine = app.engine(sources)
+        ["#{engine.mtime.to_i.to_s(36)}/#{engine.encoded}#{friendly_ext}"]
+      else
+        sources.map { |source|
+          engine = app.engine([source])
+          friendly_name = File.basename(source, '.*')
+          "#{engine.mtime.to_i.to_s(36)}/#{engine.encoded}-#{friendly_name}#{friendly_ext}"
+        }
+      end
     end
 
-    def fewer_stylesheets_tag(*names)
-      engine = Fewer::App[:stylesheets].engine(names)
-      stylesheet_link_tag "#{engine.encoded}.css?#{engine.mtime.to_i}"
+    def fewer_javascripts_tag(*sources)
+      options = sources.extract_options!
+      options.delete(:cache)
+      app = Fewer::App[:javascripts]
+      javascript_include_tag fewer_encode_sources(app, sources, '.js'), options
+    end
+
+    def fewer_stylesheets_tag(*sources)
+      options = sources.extract_options!
+      options.delete(:cache)
+      app = Fewer::App[:stylesheets]
+      stylesheet_link_tag fewer_encode_sources(app, sources, '.css'), options
     end
   end
 end
