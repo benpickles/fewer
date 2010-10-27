@@ -3,7 +3,7 @@ module Fewer
     def fewer_encode_sources(app, sources, friendly_ext = nil)
       ext = app.engine_klass.extension
       sources.map! { |source|
-        ext && File.extname(source) == '' ? "#{source}#{ext}" : source
+        ext && source[-ext.length, ext.length] != ext ? "#{source}#{ext}" : source
       }
 
       if config.perform_caching

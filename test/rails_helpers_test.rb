@@ -21,8 +21,8 @@ class RailsHelpersTest < Test::Unit::TestCase
   end
 
   def test_extension_added_if_not_present
-    @app.expects(:engine).with(['a.fewer', 'b.fewer']).returns(@engine)
-    @helper.fewer_encode_sources @app, ['a', 'b']
+    @app.expects(:engine).with(['a.min.fewer', 'b.fewer.min.fewer']).returns(@engine)
+    @helper.fewer_encode_sources @app, ['a.min', 'b.fewer.min']
   end
 
   def test_single_stylesheet_with_caching
