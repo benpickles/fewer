@@ -3,7 +3,7 @@ module Fewer
     class << self
       def decode(root, encoded)
         files = ls(root)
-        delimeter = encoded.index(',') ? ',' : //
+        delimeter = files.length > 36 ? ',' : ''
 
         encoded.split(delimeter).map { |char|
           files[char.to_i(36)]
@@ -12,7 +12,7 @@ module Fewer
 
       def encode(root, paths)
         files = ls(root)
-        delimeter = paths.length > 36 ? ',' : ''
+        delimeter = files.length > 36 ? ',' : ''
 
         paths.map { |path|
           index = files.index(path)
