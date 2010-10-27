@@ -34,11 +34,15 @@ module Fewer
 
       def etag
         # MD5 for concatenation of all files
-        Digest::MD5.hexdigest(paths.map { |path| File.read(path) }.join)
+        Digest::MD5.hexdigest(source)
       end
 
       def read
-        @read ||= paths.map { |path|
+        source
+      end
+
+      def source
+        @source ||= paths.map { |path|
           File.read(path)
         }.join("\n")
       end

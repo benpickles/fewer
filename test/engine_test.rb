@@ -66,6 +66,21 @@ class EngineTest < Test::Unit::TestCase
     end
   end
 
+  def test_read_source_files_once_when_generating_etag_and_content
+    file = touch('a.css')
+    engine = Fewer::Engines::Abstract.new(fs, [file])
+    File.expects(:read).once.returns('')
+    engine.etag
+    engine.read
+  end
+
+  def test_generating_etag_should_not_process_content
+    file = touch('a.less')
+    engine = Fewer::Engines::Less.new(fs, [file])
+    Less::Engine.expects(:new).never
+    engine.etag
+  end
+
   private
     def engine_klass(&block)
       Class.new(Fewer::Engines::Abstract, &block)
