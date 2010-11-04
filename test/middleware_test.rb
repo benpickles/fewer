@@ -18,7 +18,9 @@ class MiddlewareTest < Test::Unit::TestCase
               :root => '/some/root/path',
               :engine => Fewer::Engines::Css,
               :mount => '/css'
-        run lambda{|env| [200, {'Content-Type'=>'text/html'},'Hello World']}
+        run lambda { |env|
+          [200, { 'Content-Type' => 'text/html' }, ['Hello World']]
+        }
       end
     end
 
