@@ -77,7 +77,7 @@ class SerializerTest < Test::Unit::TestCase
   def test_encode_1_of_99_files
     FakeFS::FileSystem.clear
     files = (0...99).map { |i| touch('%02d' % i + '.css') }
-    assert_equal '2q', Fewer::Serializer.encode(fs, fs('98.css'))
+    assert_equal '2q', Fewer::Serializer.encode(fs, [fs('98.css')])
   end
 
   def test_decode_first_file
