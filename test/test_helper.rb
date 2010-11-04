@@ -5,7 +5,7 @@ require 'test/unit'
 
 require 'rubygems'
 require 'active_support/core_ext/array/extract_options'
-require 'leftright'
+require 'leftright' if RUBY_VERSION < '1.9'
 require 'less'
 require 'mocha'
 require 'rack/test'
