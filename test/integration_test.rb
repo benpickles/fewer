@@ -14,19 +14,22 @@ class IntegrationTest < Test::Unit::TestCase
 
   def test_initialises_a_new_engine_with_a_single_file
     path = touch('a.css')
-    Fewer::Engines::Css.expects(:new).with(fs, [path], {}).returns(stub)
+    engine = Fewer::Engines::Css.new(fs, [path])
+    Fewer::Engines::Css.expects(:new).with(fs, [path], {}).returns(engine)
     @browser.get "/#{encode([path])}"
   end
 
   def test_initialises_a_new_engine_with_multiple_files
     paths = [touch('a.css'), touch('b.css')]
-    Fewer::Engines::Css.expects(:new).with(fs, paths, {}).returns(stub)
+    engine = Fewer::Engines::Css.new(fs, paths)
+    Fewer::Engines::Css.expects(:new).with(fs, paths, {}).returns(engine)
     @browser.get "/#{encode(paths)}"
   end
 
   def test_strip_metadata_from_path
     paths = [touch('a.css'), touch('b.css')]
-    Fewer::Engines::Css.expects(:new).with(fs, paths, {}).returns(stub)
+    engine = Fewer::Engines::Css.new(fs, paths)
+    Fewer::Engines::Css.expects(:new).with(fs, paths, {}).returns(engine)
     @browser.get "/#{encode(paths)}-blah.css"
   end
 
