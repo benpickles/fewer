@@ -1,3 +1,5 @@
+*.gem
+.bundle
 /coverage
-/pkg
-/rdoc
+Gemfile.lock
+pkg/*
