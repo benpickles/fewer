@@ -80,6 +80,16 @@ class SerializerTest < Test::Unit::TestCase
     assert_equal '2q', Fewer::Serializer.encode(fs, [fs('98.css')])
   end
 
+  def test_files_encoded_in_the_same_order_each_time
+    FakeFS::FileSystem.clear
+    files = (0...36).map { |i| touch('%02d' % i + '.css') }
+    Dir.stubs(:glob).returns(files)
+    encoded1 = Fewer::Serializer.encode(fs, files)
+    Dir.stubs(:glob).returns(files.reverse)
+    encoded2 = Fewer::Serializer.encode(fs, files)
+    assert_equal encoded1, encoded2
+  end
+
   def test_decode_first_file
     decoded = Fewer::Serializer.decode(fs, '0')
     assert_equal [
