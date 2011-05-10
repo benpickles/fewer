@@ -24,7 +24,7 @@ module Fewer
         def ls(root)
           pattern = File.join(root, '**', '*.*')
 
-          Dir.glob(pattern).delete_if { |path|
+          Dir.glob(pattern).sort.delete_if { |path|
             File.directory?(path)
           }
         end
